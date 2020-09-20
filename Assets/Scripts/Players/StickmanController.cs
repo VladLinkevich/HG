@@ -16,11 +16,13 @@ public class StickmanController : MonoBehaviour
     private SpriteRenderer _sprite;
     private Rigidbody2D _body;
     private PlayerDirection _direction = PlayerDirection.Stop;
+    private Vector2 _force;
     private Vector2 _movement;
 
     private bool _isGrounded;
     private bool _rightMove;
     private bool _leftMove;
+
 
     public float rememberGroundedFor;
     float lastTimeGrounded;
@@ -54,6 +56,8 @@ public class StickmanController : MonoBehaviour
 
     private void Move()
     {
+
+
         if (_movement.x < 0)
         {
             if (_isGrounded) { _movement.x -= 1; }
@@ -98,7 +102,18 @@ public class StickmanController : MonoBehaviour
         }
 
         _animator.SetFloat("Speed", Mathf.Abs(_movement.x));
-        transform.Translate(_movement * speed * Time.deltaTime);
+
+        transform.Translate((_force + _movement) * speed * Time.deltaTime);
+
+        if (_force.x < 0)
+        {
+            if (_isGrounded) { _force.x += (_movement.x + 1f); }
+            else { _force.x += (_movement.x + 1f) / 2; }
+        } else
+        {
+            _force = Vector2.zero;
+        }
+
     }
 
     private void Jump()
@@ -126,7 +141,7 @@ public class StickmanController : MonoBehaviour
 
     private void Shooting()
     {
-        _movement += Vector2.left * 10;
+        _force += Vector2.left * 5;
         ShootingAnimation();
     }
 
