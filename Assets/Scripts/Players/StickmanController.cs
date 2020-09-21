@@ -8,6 +8,7 @@ public class StickmanController : MonoBehaviour
     [SerializeField] private float speed = 6f;
     [SerializeField] private float jumpSpeed = 10f;
     [SerializeField] private float checkGroundRadius = 0.05f;
+    [SerializeField] private float rememberGroundedFor = 0.08f;
     [SerializeField] private Transform isGroundedChecker;
     [SerializeField] private LayerMask groundLayer;
 
@@ -18,18 +19,21 @@ public class StickmanController : MonoBehaviour
     private PlayerDirection _direction = PlayerDirection.Stop;
     private Vector2 _force;
     private Vector2 _movement;
+    private float lastTimeGrounded;
 
     private bool _isGrounded;
     private bool _rightMove;
-    private bool _leftMove;
-
-
-    public float rememberGroundedFor;
-    float lastTimeGrounded;
+    private bool _leftMove;    
 
     private void Awake()
     {
         Messenger.AddListener(GameEvent.SHOOTPLAYER, Shooting);
+        Messenger.AddListener(GameEvent.STARTRELOAD, Reload);
+
+        Messenger.AddListener(GameEvent.RUNRIGHT, RunRight);
+        Messenger.AddListener(GameEvent.RUNLEFT, RunLeft);
+        Messenger.AddListener(GameEvent.STOPRIGHT, StopRight);
+        Messenger.AddListener(GameEvent.STOPLEFT, StopLeft);
     }
 
     private void Start()
@@ -50,6 +54,7 @@ public class StickmanController : MonoBehaviour
 
     private void Update()
     {
+        
         Move();
         Jump();
     }
@@ -57,41 +62,11 @@ public class StickmanController : MonoBehaviour
     private void Move()
     {
 
-
         if (_movement.x < 0)
         {
             if (_isGrounded) { _movement.x -= 1; }
             else { _movement.x -= 0.4f; }
         }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            _direction = PlayerDirection.Right;
-            if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f)) { transform.Rotate(0, 180f, 0); }
-            _rightMove = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.D))
-        {
-            if (_leftMove) { if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 180f)) { transform.Rotate(0, -180f, 0); } }
-            else { _direction = PlayerDirection.Stop; }
-            _rightMove = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            _direction = PlayerDirection.Right;
-            if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 180f)) { transform.Rotate(0, -180f, 0); }
-            _leftMove = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.A))
-        {
-
-            if (_rightMove) { if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f)) { transform.Rotate(0, 180f, 0); } }
-            else { _direction = PlayerDirection.Stop; }
-            _leftMove = false;
-        }
-
-
 
         switch (_direction)
         {
@@ -105,16 +80,21 @@ public class StickmanController : MonoBehaviour
 
         transform.Translate((_force + _movement) * speed * Time.deltaTime);
 
+
+
+    }
+
+    private void FixedUpdate()
+    {
         if (_force.x < 0)
         {
-            if (_isGrounded) { _force.x += ((_movement.x /3) + 1f); }
-            else { _force.x += ((_movement.x / 3) + 1f) / 2; }
+            if (_isGrounded) { _force.x += ((_movement.x / 10) + 1f); }
+            else { _force.x += ((_movement.x / 10) + 1f) / 2; }
         }
         else
         {
             _force = Vector2.zero;
         }
-
     }
 
     private void Jump()
@@ -140,10 +120,46 @@ public class StickmanController : MonoBehaviour
         }
     }
 
+    private void RunRight()
+    {
+        _direction = PlayerDirection.Right;
+        if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f)) { transform.Rotate(0, 180f, 0); }
+        _rightMove = true;
+    }
+    private void RunLeft()
+    {
+        _direction = PlayerDirection.Right;
+        if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 180f)) { transform.Rotate(0, -180f, 0); }
+        _leftMove = true;
+    }
+    private void StopRight()
+    {
+        if (_leftMove) { if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 180f)) { transform.Rotate(0, -180f, 0); } }
+        else { _direction = PlayerDirection.Stop; }
+        _rightMove = false;
+    }
+    private void StopLeft()
+    {
+        if (_rightMove) { if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f)) { transform.Rotate(0, 180f, 0); } }
+        else { _direction = PlayerDirection.Stop; }
+        _leftMove = false;
+    }
+
+    private void CompleteReload()
+    {
+        _animator.SetBool("Reload", false);
+
+    }
+
+    private void Reload()
+    {
+        _animator.SetBool("Reload", true);
+    }
     private void Shooting()
     {
         _force += Vector2.left * 5;
         ShootingAnimation();
+        Reload();
     }
 
     private void ShootingAnimation()

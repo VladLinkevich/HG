@@ -17,6 +17,7 @@ public class PlayerShooting : MonoBehaviour
 
     private void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Messenger<Transform>.Broadcast(GameEvent.SHOOT, spawnPos);
