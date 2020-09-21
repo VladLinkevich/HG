@@ -91,7 +91,7 @@ public class StickmanController : MonoBehaviour
             _leftMove = false;
         }
 
-       
+
 
         switch (_direction)
         {
@@ -107,9 +107,10 @@ public class StickmanController : MonoBehaviour
 
         if (_force.x < 0)
         {
-            if (_isGrounded) { _force.x += (_movement.x + 1f); }
-            else { _force.x += (_movement.x + 1f) / 2; }
-        } else
+            if (_isGrounded) { _force.x += ((_movement.x /3) + 1f); }
+            else { _force.x += ((_movement.x / 3) + 1f) / 2; }
+        }
+        else
         {
             _force = Vector2.zero;
         }
@@ -135,7 +136,7 @@ public class StickmanController : MonoBehaviour
         {
             if (_isGrounded) { lastTimeGrounded = Time.time; }
             _isGrounded = false;
-            
+
         }
     }
 
