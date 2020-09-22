@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
 
 
     private List<GameObject> _poolBullets;
-    private GameObject _bullet;
+    private GameObject __bullet;
 
     public List<GameObject> PoolBullets
     {
@@ -25,9 +25,9 @@ public class Bullet : MonoBehaviour
         _poolBullets = new List<GameObject>();
         for (int i = 0; i < poolSize; ++i)
         {
-            _bullet = Instantiate(bullet);
-            _bullet.SetActive(false);
-            _poolBullets.Add(_bullet);
+            __bullet = Instantiate(bullet);
+            __bullet.SetActive(false);
+            _poolBullets.Add(__bullet);
         }
     }
 }

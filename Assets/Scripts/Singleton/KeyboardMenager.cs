@@ -14,5 +14,7 @@ public class KeyboardMenager : Singleton<KeyboardMenager>
         if (Input.GetKeyDown(KeyCode.A)) { Messenger.Broadcast(GameEvent.RUNLEFT); }
         else if (Input.GetKeyUp(KeyCode.A)) { Messenger.Broadcast(GameEvent.STOPLEFT); }
 
+        if (Input.GetKeyDown(KeyCode.S)) { Messenger.Broadcast(GameEvent.FALL); }
+
     }
 }

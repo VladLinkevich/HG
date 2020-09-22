@@ -12,6 +12,7 @@ public class StickmanController : MonoBehaviour
     [SerializeField] private Transform isGroundedChecker;
     [SerializeField] private LayerMask groundLayer;
 
+
     private Animator _animator;
     private Collider2D _collider;
     private SpriteRenderer _sprite;
@@ -34,6 +35,7 @@ public class StickmanController : MonoBehaviour
         Messenger.AddListener(GameEvent.RUNLEFT, RunLeft);
         Messenger.AddListener(GameEvent.STOPRIGHT, StopRight);
         Messenger.AddListener(GameEvent.STOPLEFT, StopLeft);
+        Messenger.AddListener(GameEvent.FALL, Fall);
     }
 
     private void Start()
@@ -55,8 +57,15 @@ public class StickmanController : MonoBehaviour
     private void Update()
     {
         
+        
+
         Move();
         Jump();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        _collider.isTrigger = false;
     }
 
     private void Move()
@@ -143,6 +152,16 @@ public class StickmanController : MonoBehaviour
         if (_rightMove) { if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f)) { transform.Rotate(0, 180f, 0); } }
         else { _direction = PlayerDirection.Stop; }
         _leftMove = false;
+    }
+
+    private void Fall()
+    {
+        Collider2D collider = Physics2D.OverlapCircle(isGroundedChecker.position, checkGroundRadius, groundLayer);
+        if (collider != null)
+        {
+            if (collider.tag == "Platform")
+                _collider.isTrigger = true;
+        }
     }
 
     private void CompleteReload()
