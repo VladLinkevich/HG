@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public GameObject bullet;
+    public int maxBulletMagazin = 2;
+    public int bulletMagazin = 2;
     public float durationBullet = 2;
     public float poolSize = 10;
     public float lenghtShooting = 10;

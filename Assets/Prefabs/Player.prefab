@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1018173876166653556}
   - component: {fileID: 4007744720063893226}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ShootgunBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6665648470884856097}
   - component: {fileID: 8577099017120111608}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8001200083762049874}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -203,7 +203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5537020184655544184}
   - component: {fileID: 995273110528504308}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: hair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7494845540273012342}
   - component: {fileID: 5903494434326797718}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -367,7 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1015498061302430703}
   - component: {fileID: 7215407619346771943}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4474019445558095914}
   - component: {fileID: 680845277295827483}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: leftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -531,7 +531,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2640749145841843856}
   - component: {fileID: 1009594170961992469}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: rightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -619,7 +619,7 @@ GameObject:
   - component: {fileID: 3881253092873746470}
   - component: {fileID: 974429575421490497}
   - component: {fileID: 689582301}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -789,7 +789,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4670051324570118475}
   - component: {fileID: 27043265397714577}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -870,7 +870,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7503521736657860554}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: spawnBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

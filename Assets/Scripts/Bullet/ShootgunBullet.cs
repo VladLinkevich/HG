@@ -47,6 +47,8 @@ public class ShootgunBullet : Bullet
                 .SetEase(ease)
                 .OnComplete(DeactiveBullet);
         }
+
+
     }
 
     private void DeactiveBullet()

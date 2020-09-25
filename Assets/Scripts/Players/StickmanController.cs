@@ -12,7 +12,6 @@ public class StickmanController : MonoBehaviour
     [SerializeField] private Transform isGroundedChecker;
     [SerializeField] private LayerMask groundLayer;
 
-
     private Animator _animator;
     private Collider2D _collider;
     private SpriteRenderer _sprite;
@@ -56,9 +55,6 @@ public class StickmanController : MonoBehaviour
 
     private void Update()
     {
-        
-        
-
         Move();
         Jump();
     }
@@ -153,7 +149,6 @@ public class StickmanController : MonoBehaviour
         else { _direction = PlayerDirection.Stop; }
         _leftMove = false;
     }
-
     private void Fall()
     {
         Collider2D collider = Physics2D.OverlapCircle(isGroundedChecker.position, checkGroundRadius, groundLayer);
