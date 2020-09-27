@@ -81,7 +81,6 @@ public class StickmanController : MonoBehaviour
     {
         Move();
         Jump();
-        RocketJump();
     }
 
     private void Jump()
@@ -94,19 +93,7 @@ public class StickmanController : MonoBehaviour
         }
     }
 
-    private void RocketJump()
-    {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (_body.velocity.y > 0)
-            {
-                _body.velocity += Vector2.up * rocketJump;
-            }else
-            {
-                _body.velocity += Vector2.up * rocketJump * 4;
-            }
-        }
-    }
+
 
     void CheckIfGrounded()
     {

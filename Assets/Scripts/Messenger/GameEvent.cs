@@ -10,4 +10,6 @@
 	public const string STOPLEFT = "STOPLEFT";
 	public const string LIES = "LIES";
 	public const string FALL = "FALL";
+
+	public const string STARTFILLUP = "STARTFILLUP";
 }
