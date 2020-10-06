@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
@@ -19,6 +20,7 @@ public class StickmanController : MonoBehaviour
     private Collider2D _collider;
     private SpriteRenderer _sprite;
     private Rigidbody2D _body;
+    private PhotonView _photonView;
     private PlayerDirection _direction = PlayerDirection.Stop;
     private Vector2 _force;
     private Vector2 _movement;
@@ -47,6 +49,7 @@ public class StickmanController : MonoBehaviour
         _collider = GetComponent<Collider2D>();
         _sprite = GetComponent<SpriteRenderer>();
         _body = GetComponent<Rigidbody2D>();
+        _photonView = GetComponent<PhotonView>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -57,9 +60,24 @@ public class StickmanController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "Border") {
+            _collider.isTrigger = false;
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
-        _collider.isTrigger = false;
+        if (collision.gameObject.tag == "Platform")
+        {
+            _collider.isTrigger = false;
+        }
+
+        if (collision.tag == "Border")
+        {
+            _collider.isTrigger = true;
+        }
     }
 
     private void Move()
@@ -80,6 +98,10 @@ public class StickmanController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+    }
+
+    private void Update()
+    {
         Jump();
     }
 
@@ -91,6 +113,7 @@ public class StickmanController : MonoBehaviour
             _body.velocity = Vector2.up * jumpSpeed;
             _animator.SetTrigger("Jump");
         }
+       
     }
 
 
@@ -164,9 +187,9 @@ public class StickmanController : MonoBehaviour
     {
         if (!Mathf.Approximately(transform.rotation.eulerAngles.y, 0f))
         {
-            _body.AddForce(new Vector2(forseForGun, 0));
+            _body.AddForce(new Vector2(forseForGun * _body.mass, 0));
         }
-        else { _body.AddForce(new Vector2(-forseForGun, 0)); }
+        else { _body.AddForce(new Vector2(-forseForGun * _body.mass, 0)); }
         ShootingAnimation();
         Reload();
     }

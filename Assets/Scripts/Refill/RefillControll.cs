@@ -6,6 +6,6 @@ public class RefillControll : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Messenger.Broadcast(GameEvent.STARTFILLUP);
+      
     }
 }
