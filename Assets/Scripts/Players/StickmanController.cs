@@ -5,8 +5,11 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
+//[RequireComponent(typeof(PhotonView))];
+//[RequireComponent(typeof(Rigidbody2D))];
 public class StickmanController : MonoBehaviour
 {
+    #region SerializeField private
     [SerializeField] private float speed = 6f;
     [SerializeField] private float jumpSpeed = 10f;
     [SerializeField] private float rocketJump = 1f;
@@ -15,7 +18,9 @@ public class StickmanController : MonoBehaviour
     [SerializeField] private float forseForGun = 50f;
     [SerializeField] private Transform isGroundedChecker;
     [SerializeField] private LayerMask groundLayer;
+    #endregion
 
+    #region Private value
     private Animator _animator;
     private Collider2D _collider;
     private SpriteRenderer _sprite;
@@ -29,18 +34,25 @@ public class StickmanController : MonoBehaviour
 
     private bool _isGrounded;
     private bool _rightMove;
-    private bool _leftMove;    
+    private bool _leftMove;
+    #endregion
 
+    #region MonoBehavior Callbacks
     private void Awake()
     {
-        Messenger.AddListener(GameEvent.SHOOTPLAYER, Shooting);
-        Messenger.AddListener(GameEvent.STARTRELOAD, Reload);
+        _photonView = GetComponent<PhotonView>();
 
-        Messenger.AddListener(GameEvent.RUNRIGHT, RunRight);
-        Messenger.AddListener(GameEvent.RUNLEFT, RunLeft);
-        Messenger.AddListener(GameEvent.STOPRIGHT, StopRight);
-        Messenger.AddListener(GameEvent.STOPLEFT, StopLeft);
-        Messenger.AddListener(GameEvent.FALL, Fall);
+        if (_photonView.IsMine)
+        {
+            Messenger.AddListener(GameEvent.SHOOTPLAYER, Shooting);
+            Messenger.AddListener(GameEvent.STARTRELOAD, Reload);
+
+            Messenger.AddListener(GameEvent.RUNRIGHT, RunRight);
+            Messenger.AddListener(GameEvent.RUNLEFT, RunLeft);
+            Messenger.AddListener(GameEvent.STOPRIGHT, StopRight);
+            Messenger.AddListener(GameEvent.STOPLEFT, StopLeft);
+            Messenger.AddListener(GameEvent.FALL, Fall);
+        }
     }
 
     private void Start()
@@ -80,6 +92,18 @@ public class StickmanController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Move();
+    }
+
+    private void Update()
+    {
+        Jump();
+    }
+    #endregion
+
+
     private void Move()
     {
 
@@ -95,15 +119,7 @@ public class StickmanController : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        Move();
-    }
 
-    private void Update()
-    {
-        Jump();
-    }
 
     private void Jump()
     {
