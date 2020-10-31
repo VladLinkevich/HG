@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
-//[RequireComponent(typeof(PhotonView))];
-//[RequireComponent(typeof(Rigidbody2D))];
+[RequireComponent(typeof(PhotonView))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class StickmanController : MonoBehaviour
 {
     #region SerializeField private
@@ -52,6 +52,7 @@ public class StickmanController : MonoBehaviour
             Messenger.AddListener(GameEvent.STOPRIGHT, StopRight);
             Messenger.AddListener(GameEvent.STOPLEFT, StopLeft);
             Messenger.AddListener(GameEvent.FALL, Fall);
+            Messenger.AddListener(GameEvent.JUMP, Jump);
         }
     }
 
@@ -62,6 +63,10 @@ public class StickmanController : MonoBehaviour
         _sprite = GetComponent<SpriteRenderer>();
         _body = GetComponent<Rigidbody2D>();
         _photonView = GetComponent<PhotonView>();
+
+        if (_photonView.IsMine) {
+            FollowCam.instance.SetTargetTransform(this.transform);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -96,14 +101,14 @@ public class StickmanController : MonoBehaviour
     {
         Move();
     }
-
     private void Update()
     {
-        Jump();
+        CheckIfGrounded();
     }
+
     #endregion
 
-
+    #region Private methods
     private void Move()
     {
 
@@ -119,12 +124,9 @@ public class StickmanController : MonoBehaviour
 
     }
 
-
-
     private void Jump()
     {
-        CheckIfGrounded();
-        if (Input.GetKeyDown(KeyCode.W) && (_isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
+        if ((_isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
         {
             _body.velocity = Vector2.up * jumpSpeed;
             _animator.SetTrigger("Jump");
@@ -134,7 +136,7 @@ public class StickmanController : MonoBehaviour
 
 
 
-    void CheckIfGrounded()
+    private void CheckIfGrounded()
     {
         Collider2D collider = Physics2D.OverlapCircle(isGroundedChecker.position, checkGroundRadius, groundLayer);
 
@@ -147,6 +149,14 @@ public class StickmanController : MonoBehaviour
         }
     }
 
+    private void ShootingAnimation()
+    {
+        _animator.SetTrigger("Shoot");
+    }
+
+    #endregion
+
+    #region Messenger methods
     private void RunRight()
     {
         _direction = PlayerDirection.Right;
@@ -210,11 +220,9 @@ public class StickmanController : MonoBehaviour
         Reload();
     }
 
-    private void ShootingAnimation()
-    {
-        _animator.SetTrigger("Shoot");
-    }
+    #endregion
 
+    #region IEnumerator
     private IEnumerator movingDown()
     {
         _collider.isTrigger = true;
@@ -222,4 +230,6 @@ public class StickmanController : MonoBehaviour
         _collider.isTrigger = false;
 
     }
+    #endregion
+
 }

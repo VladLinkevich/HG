@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardMenager : Singleton<KeyboardMenager>
+public class KeyboardMenager : MonoBehaviour
 {
-    private bool _rightMove;
-    private bool _leftMove;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.D)) { Messenger.Broadcast(GameEvent.RUNRIGHT); }
@@ -15,6 +13,9 @@ public class KeyboardMenager : Singleton<KeyboardMenager>
         else if (Input.GetKeyUp(KeyCode.A)) { Messenger.Broadcast(GameEvent.STOPLEFT); }
 
         if (Input.GetKeyDown(KeyCode.S)) { Messenger.Broadcast(GameEvent.FALL); }
+        if (Input.GetKeyDown(KeyCode.W)) { Messenger.Broadcast(GameEvent.JUMP); }
+        if (Input.GetKeyDown(KeyCode.LeftShift)) { Messenger.Broadcast(GameEvent.SHOOTMESSENGER); }
+        
 
     }
 }

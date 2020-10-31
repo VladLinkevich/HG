@@ -2,27 +2,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
+[RequireComponent(typeof(PhotonView))]
 public class PlayerShooting : MonoBehaviour
 {
 
     [SerializeField] private ShootgunBullet bullet;
     [SerializeField] private Transform spawnPos;
 
-    private Animator _anim;
-    private void Start()
-    {
-        _anim = GetComponent<Animator>();
-    }
+    private PhotonView _photonView;
 
-    private void Update()
+    private void Awake()
     {
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        _photonView = GetComponent<PhotonView>();
+        if (_photonView.IsMine)
         {
-            Messenger<Transform>.Broadcast(GameEvent.SHOOT, spawnPos);
-            Messenger.Broadcast(GameEvent.SHOOTPLAYER);
+            Messenger.AddListener(GameEvent.SHOOTMESSENGER, Shoot);
         }
     }
 
+    private void OnDestroy()
+    {
+        if (_photonView.IsMine)
+        {
+            Messenger.RemoveListener(GameEvent.SHOOTMESSENGER, Shoot);
+        }
+    }
+
+    private void Shoot()
+    {
+        Messenger<Transform>.Broadcast(GameEvent.SHOOT, spawnPos);
+        Messenger.Broadcast(GameEvent.SHOOTPLAYER);
+    }
 }

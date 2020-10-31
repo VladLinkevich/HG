@@ -29,12 +29,10 @@ public class JetpackController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && _fuel > 0)
         {
             particleFire.Play();
-            Debug.Log("Go");
         }
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space) || _fuel <= 0)
         {
             particleFire.Stop();
-            Debug.Log("Stop");
         }
     }
 

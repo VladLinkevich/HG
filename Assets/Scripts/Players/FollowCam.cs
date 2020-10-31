@@ -4,11 +4,20 @@ using UnityEngine;
 
 public class FollowCam : MonoBehaviour
 {
-    [SerializeField] private Transform target;
+    public static FollowCam instance;
+
     [SerializeField] private float smoothTime = 0.2f; 
 
-
+    private Transform target;
     private Vector3 _velocity = Vector3.zero;
+
+    private void Start()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void LateUpdate()
     {
@@ -17,5 +26,10 @@ public class FollowCam : MonoBehaviour
 
         transform.position = Vector3.SmoothDamp(transform.position,
             targetPosition, ref _velocity, smoothTime);
+    }
+
+    public void SetTargetTransform(Transform target)
+    {
+        this.target = target;
     }
 }
